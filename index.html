@@ -1,133 +1,122 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Kuzenkov</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Font stylesheet (from your provider) -->
-  <link rel="stylesheet" href="https://YOUR-FONT-STYLESHEET-URL.css">
+<title>Georgii Kuzenkov</title>
 
-  <style>
-    :root{
-      /* Business card geometry */
-      --card-ratio: 3.5 / 2;
+<!-- твой font stylesheet -->
+<link rel="stylesheet" href="PASTE_FONT_STYLESHEET_URL_HERE">
 
-      /* memoir margins */
-      --mt: 5mm;
-      --mx: 3mm;
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+}
 
-      --bg: #ffffff;
-      --ink: #000000;
-    }
+body {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  font-family: "Garamond Classico SC", serif;
+  color: #000;
+}
 
-    *{ box-sizing:border-box; }
+/* ===== TOP LINE ===== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 3vh 4vw;
+  font-size: 1.1rem;
+  letter-spacing: .04em;
+}
 
-    body{
-      margin:0;
-      min-height:100vh;
-      display:grid;
-      place-items:center;
-      background:#f2f2f2;
-      color:var(--ink);
-    }
+.email {
+  font-family: "Garamond Classico", serif;
+}
 
-    .card{
-      width:min(92vw, 560px);
-      aspect-ratio: var(--card-ratio);
-      background:var(--bg);
-      border-radius:14px;
-      box-shadow:0 14px 40px rgba(0,0,0,.14);
-      position:relative;
-    }
+.company {
+  text-align: right;
+}
 
-    .typeblock{
-      position:absolute;
-      top:var(--mt);
-      left:var(--mx);
-      right:var(--mx);
-      bottom:var(--mt);
+.company strong {
+  display: block;
+  font-size: 1.2rem;
+}
 
-      display:flex;
-      flex-direction:column;
+.company span {
+  font-size: .9rem;
+  letter-spacing: .08em;
+}
 
-      font-family:'Garamond Classico SC', serif;
-      font-size:14px;
-      line-height:1.08;
-      letter-spacing:.02em;
-    }
+/* ===== CENTER ===== */
+.center {
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
 
-    .company{
-      font-size:12.5px;
-      letter-spacing:.08em;
-    }
+.name {
+  font-size: clamp(2.4rem, 4vw, 3.6rem);
+  margin-bottom: .4em;
+}
 
-    .name{
-      margin-top:.2em;
-      font-size:18px;
-      line-height:1;
-    }
+.role {
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  letter-spacing: .06em;
+}
 
-    .title{
-      margin-top:.05em;
-      font-size:12.5px;
-      letter-spacing:.06em;
-    }
+/* ===== FOOTER ===== */
+.footer {
+  text-align: center;
+  padding-bottom: 4vh;
+  font-size: 1.2rem;
+  letter-spacing: .04em;
+}
 
-    .contact{
-      margin-top:auto;
-      font-size:11.8px;
-      line-height:1.15;
-      letter-spacing:.03em;
-      display:flex;
-      flex-direction:column;
-      gap:.15em;
-    }
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
-    .row{
-      display:flex;
-      justify-content:space-between;
-      white-space:nowrap;
-    }
-
-    a{
-      color:inherit;
-      text-decoration:none;
-    }
-
-    a:hover{
-      text-decoration:underline;
-    }
-
-    @media (max-width:380px){
-      .typeblock{ font-size:13px; }
-      .name{ font-size:17px; }
-      .contact{ font-size:11px; }
-    }
-  </style>
+a:hover {
+  text-decoration: underline;
+}
+</style>
 </head>
 
 <body>
-  <main class="card">
-    <section class="typeblock">
 
-      <!-- company -->
-      <div class="company">KUZENKOV &amp; CO</div>
+<!-- TOP -->
+<header class="header">
+  <div class="email">
+    <a href="mailto:georgii.kuzenkov@gmail.com">
+      georgii.kuzenkov@gmail.com
+    </a>
+  </div>
 
-      <!-- name -->
-      <div class="name">GEORGII KUZENKOV</div>
+  <div class="company">
+    <strong>KUZENKOV &amp; Co.</strong>
+    <span>Digital Markets and Attention Economy</span>
+  </div>
+</header>
 
-      <!-- jobTitle -->
-      <div class="title">ON-CHAIN STRATEGY &amp; BD</div>
+<!-- CENTER -->
+<main class="center">
+  <div>
+    <div class="name">Georgii Kuzenkov</div>
+    <div class="role">On-Chain Strategy &amp; Deal Sourcing</div>
+  </div>
+</main>
 
-      <!-- contact -->
-      <div class="contact">
-        <div class="row"><span>Web</span><span><a href="https://kuzenkov.co">kuzenkov.co</a></span></div>
-        <div class="row"><span>Email</span><span><a href="mailto:name@kuzenkov.co">name@kuzenkov.co</a></span></div>
-        <div class="row"><span>Location</span><span>Global</span></div>
-      </div>
+<!-- FOOTER -->
+<footer class="footer">
+  Helsinki · Global
+</footer>
 
-    </section>
-  </main>
 </body>
 </html>
