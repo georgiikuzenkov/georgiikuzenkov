@@ -10,175 +10,163 @@
 
   <style>
     :root{
-      /* LaTeX card: 3.5in x 2in */
-      --card-ratio: 3.5 / 2;
-
-      /* Converted from LaTeX margins in mm relative to card size
-         width 88.9mm, height 50.8mm
-         left/right: 3mm => 3 / 88.9 = 3.3745%
-         top: 5mm => 5 / 50.8 = 9.8425%
-         typeblock height 1.75in=44.45mm => bottom margin ~ 50.8-44.45-5 = 1.35mm => 2.657%
-      */
-      --pad-x: 3.3745%;
-      --pad-top: 9.8425%;
-      --pad-bottom: 2.657%;
-
       --font: "adobe-garamond-pro", serif;
       --ink: #000;
       --bg: #fff;
+
+      /* LaTeX margins mapped to screen (page behaves like the card/page) */
+      --mx: 3.3745vw;   /* 3mm / 88.9mm */
+      --mt: 9.8425vh;   /* 5mm / 50.8mm */
+
+      /* Typography scale (proportional like print) */
+      --small:  clamp(14px, 1.8vmin, 22px); /* email top + small text */
+      --brand:  clamp(16px, 2.0vmin, 26px); /* KUZENKOV & Co */
+      --tag:    clamp(13px, 1.6vmin, 20px); /* tagline */
+      --name:   clamp(44px, 5.2vmin, 90px); /* big name */
+      --role:   clamp(26px, 3.3vmin, 56px); /* role line */
+      --emailB: clamp(18px, 2.4vmin, 36px); /* bottom email */
     }
 
-    html, body {
-      width: 100%;
-      height: 100%;
-      margin: 0;
+    html, body{
+      margin:0;
+      width:100%;
+      height:100%;
       background: var(--bg);
       color: var(--ink);
       font-family: var(--font);
     }
 
-    /* Viewport canvas that preserves the card aspect ratio */
-    .viewport {
+    /* ===== Desktop / default: whole screen is the “card/page” ===== */
+    .page{
+      position: relative;
       width: 100vw;
       height: 100vh;
-      display: grid;
-      place-items: center; /* always centered */
-      background: var(--bg);
+      overflow: hidden;
     }
 
-    .cardCanvas {
-      /* Fit inside viewport but keep ratio 3.5:2 */
-      width: min(100vw, calc(100vh * (3.5 / 2)));
-      height: calc(min(100vw, calc(100vh * (3.5 / 2))) / (3.5 / 2));
-      position: relative;
-      background: var(--bg);
-    }
-
-    /* Typeblock area exactly like memoir */
-    .typeblock {
+    /* Top-left email (replaces phone number) */
+    .email-top{
       position: absolute;
-      left: var(--pad-x);
-      right: var(--pad-x);
-      top: var(--pad-top);
-      bottom: var(--pad-bottom);
-
-      display: grid;
-      grid-template-rows: auto 1fr auto; /* top line, center, bottom line */
-      align-items: start;
-    }
-
-    /* ===== Top line ===== */
-    .topline {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 2%;
+      left: var(--mx);
+      top: var(--mt);
+      font-size: var(--small);
       line-height: 1.05;
-    }
-
-    .emailTop {
-      font-size: clamp(14px, 1.15vw, 20px);
       white-space: nowrap;
     }
 
-    .brandBlock {
+    /* Top-right company block */
+    .company{
+      position: absolute;
+      right: var(--mx);
+      top: var(--mt);
       text-align: right;
+      line-height: 1.05;
     }
-
-    .brand {
-      font-size: clamp(16px, 1.25vw, 22px);
+    .company .brand{
+      font-size: var(--brand);
       font-weight: 600;
     }
-
-    .tagline {
-      font-size: clamp(12px, 0.95vw, 18px);
+    .company .tagline{
+      font-size: var(--tag);
       font-variant: small-caps;
       letter-spacing: 0.04em;
     }
 
-    /* ===== Center ===== */
-    .center {
-      display: grid;
-      place-items: center;
+    /* Center block positioned like PDF (name around ~45% height, role below) */
+    .center{
+      position: absolute;
+      left: 50%;
+      top: 50.8%; /* tuned to match your PDF spacing */
+      transform: translate(-50%, -50%);
       text-align: center;
       line-height: 1.05;
+      width: calc(100vw - 2*var(--mx));
     }
-
-    .name {
-      font-size: clamp(30px, 3.2vw, 64px);
+    .center .name{
+      font-size: var(--name);
       font-variant: small-caps;
       letter-spacing: 0.02em;
-      margin-bottom: 0.22em;
+      margin-bottom: 0.18em;
+      white-space: nowrap;
     }
-
-    .role {
-      font-size: clamp(18px, 1.9vw, 34px);
+    .center .role{
+      font-size: var(--role);
       font-variant: small-caps;
       letter-spacing: 0.03em;
-    }
-
-    /* ===== Bottom email (mobile) ===== */
-    .emailBottom {
-      display: none;
-      justify-self: center;
-      font-size: 18px;
       white-space: nowrap;
     }
 
-    a { color: inherit; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    /* Bottom email positioned like PDF (~87% height) */
+    .email-bottom{
+      position: absolute;
+      left: 50%;
+      top: 87.5%;
+      transform: translateX(-50%);
+      font-size: var(--emailB);
+      font-variant: small-caps;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
 
-    /* MOBILE: match your screenshot (top centered, email in footer) */
-    @media (max-width: 640px) {
-      .topline {
-        justify-content: center;
-      }
-      .emailTop {
-        display: none;
-      }
-      .brandBlock {
+    a{ color: inherit; text-decoration: none; }
+    a:hover{ text-decoration: underline; }
+
+    /* ===== Mobile: “simple” layout you asked ===== */
+    @media (max-width: 640px){
+      .email-top{ display: none; } /* no top-left on mobile */
+
+      .company{
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
         text-align: center;
       }
-      .emailBottom {
-        display: block;
-        font-size: 18px;
+
+      .center{
+        top: 55%;
+        width: 92vw;
       }
-      /* On narrow screens, keep type sizes readable */
-      .name { font-size: clamp(34px, 7.5vw, 54px); }
-      .role { font-size: clamp(18px, 4.5vw, 26px); }
+
+      .center .name, .center .role{
+        white-space: normal; /* allow wrapping on narrow screens */
+      }
+
+      .email-bottom{
+        top: auto;
+        bottom: calc(18px + env(safe-area-inset-bottom));
+        left: 50%;
+        transform: translateX(-50%);
+        font-variant: normal;
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="viewport">
-    <div class="cardCanvas">
-      <div class="typeblock">
+  <div class="page">
 
-        <div class="topline">
-          <div class="emailTop">
-            <a href="mailto:georgii.kuzenkov@gmail.com">georgii.kuzenkov@gmail.com</a>
-          </div>
-
-          <div class="brandBlock">
-            <div class="brand">KUZENKOV &amp; Co.</div>
-            <div class="tagline">Digital Markets and Attention Economy</div>
-          </div>
-        </div>
-
-        <div class="center">
-          <div>
-            <div class="name">Georgii Kuzenkov</div>
-            <div class="role">On-Chain Strategy &amp; Deal Sourcing</div>
-          </div>
-        </div>
-
-        <div class="emailBottom">
-          <a href="mailto:georgii.kuzenkov@gmail.com">georgii.kuzenkov@gmail.com</a>
-        </div>
-
-      </div>
+    <!-- Desktop top-left (email replaces phone) -->
+    <div class="email-top">
+      <a href="mailto:georgii.kuzenkov@gmail.com">georgii.kuzenkov@gmail.com</a>
     </div>
+
+    <!-- Company top-right (desktop) / top-center (mobile) -->
+    <div class="company">
+      <div class="brand">KUZENKOV &amp; Co.</div>
+      <div class="tagline">Digital Markets and Attention Economy</div>
+    </div>
+
+    <!-- Middle -->
+    <div class="center">
+      <div class="name">Georgii Kuzenkov</div>
+      <div class="role">On-Chain Strategy &amp; Deal Sourcing</div>
+    </div>
+
+    <!-- Mobile footer email (also shown on desktop at PDF-like position) -->
+    <div class="email-bottom">
+      <a href="mailto:georgii.kuzenkov@gmail.com">georgii.kuzenkov@gmail.com</a>
+    </div>
+
   </div>
 </body>
 </html>
