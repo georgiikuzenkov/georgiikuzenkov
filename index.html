@@ -6,7 +6,7 @@
   <title>Georgii Kuzenkov</title>
 
   <!-- Adobe Fonts -->
-  <link rel="stylesheet" href="https://use.typekit.net/sdw7jwi.css">
+  <link rel="stylesheet" href="https://use.typekit.net/XXXX.css">
 
   <style>
     :root{
@@ -14,17 +14,21 @@
       --ink: #000;
       --bg: #fff;
 
-      /* LaTeX margins mapped to screen (page behaves like the card/page) */
-      --mx: 3.3745vw;   /* 3mm / 88.9mm */
-      --mt: 9.8425vh;   /* 5mm / 50.8mm */
+      /* LaTeX-ish margins */
+      --mx: 3.3745vw;
+      --mt: 9.8425vh;
 
-      /* Typography scale (proportional like print) */
-      --small:  clamp(14px, 1.8vmin, 22px); /* email top + small text */
-      --brand:  clamp(16px, 2.0vmin, 26px); /* KUZENKOV & Co */
-      --tag:    clamp(13px, 1.6vmin, 20px); /* tagline */
-      --name:   clamp(44px, 5.2vmin, 90px); /* big name */
-      --role:   clamp(26px, 3.3vmin, 56px); /* role line */
-      --emailB: clamp(18px, 2.4vmin, 36px); /* bottom email */
+      /* proportional sizes */
+      --emailTop: clamp(14px, 1.8vmin, 22px);
+      --brand:    clamp(16px, 2.0vmin, 26px);
+      --tag:      clamp(13px, 1.6vmin, 20px);
+      --name:     clamp(44px, 5.2vmin, 90px);
+      --role:     clamp(26px, 3.3vmin, 56px);
+
+      --footerMain: clamp(18px, 2.2vmin, 34px); /* mobile email */
+      --ySmall:     clamp(12px, 1.5vmin, 18px); /* y-tunnus mobile */
+
+      --grey: rgba(0,0,0,0.35);
     }
 
     html, body{
@@ -36,7 +40,6 @@
       font-family: var(--font);
     }
 
-    /* ===== Desktop / default: whole screen is the “card/page” ===== */
     .page{
       position: relative;
       width: 100vw;
@@ -44,19 +47,23 @@
       overflow: hidden;
     }
 
-    /* Top-left email (replaces phone number) */
+    a{ color: inherit; text-decoration: none; }
+    a:hover{ text-decoration: underline; }
+
+    /* ===== Desktop header ===== */
     .email-top{
       position: absolute;
-      left: 50%;
-      top: 87.5%;
-      transform: translateX(-50%);
-      font-size: var(--emailB);
+      left: var(--mx);
+      top: var(--mt);
+      font-size: var(--emailTop);
+      line-height: 1.05;
+      white-space: nowrap;
+
+      /* must be small caps */
       font-variant: small-caps;
       letter-spacing: 0.02em;
-      white-space: nowrap;
     }
 
-    /* Top-right company block */
     .company{
       position: absolute;
       right: var(--mx);
@@ -67,6 +74,8 @@
     .company .brand{
       font-size: var(--brand);
       font-weight: 600;
+      font-variant: small-caps;
+      letter-spacing: 0.02em;
     }
     .company .tagline{
       font-size: var(--tag);
@@ -74,23 +83,27 @@
       letter-spacing: 0.04em;
     }
 
-    /* Center block positioned like PDF (name around ~45% height, role below) */
+    /* ===== Center block ===== */
     .center{
       position: absolute;
       left: 50%;
-      top: 50.8%; /* tuned to match your PDF spacing */
+      top: 50.8%;
       transform: translate(-50%, -50%);
       text-align: center;
       line-height: 1.05;
       width: calc(100vw - 2*var(--mx));
     }
+
     .center .name{
       font-size: var(--name);
       font-variant: small-caps;
       letter-spacing: 0.02em;
       margin-bottom: 0.18em;
+
+      /* must stay one line (desktop + mobile) */
       white-space: nowrap;
     }
+
     .center .role{
       font-size: var(--role);
       font-variant: small-caps;
@@ -98,24 +111,28 @@
       white-space: nowrap;
     }
 
-    /* Bottom email positioned like PDF (~87% height) */
-    .email-bottom{
+    /* ===== Desktop bottom: Y-tunnus only (no email) ===== */
+    .y-desktop{
       position: absolute;
       left: 50%;
       top: 87.5%;
       transform: translateX(-50%);
-      font-size: var(--emailB);
+      color: var(--grey);
+
+      font-size: clamp(14px, 1.7vmin, 22px);
       font-variant: small-caps;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.03em;
       white-space: nowrap;
     }
 
-    a{ color: inherit; text-decoration: none; }
-    a:hover{ text-decoration: underline; }
+    /* ===== Mobile footer ===== */
+    .footerMobile{
+      display: none;
+    }
 
-    /* ===== Mobile: “simple” layout you asked ===== */
     @media (max-width: 640px){
-      .email-top{ display: none; } /* no top-left on mobile */
+      /* mobile header: company centered, email-top hidden */
+      .email-top{ display: none; }
 
       .company{
         left: 50%;
@@ -124,21 +141,54 @@
         text-align: center;
       }
 
+      /* keep center visually like your screenshot */
       .center{
         top: 55%;
         width: 92vw;
       }
 
-      .center .name, .center .role{
-        white-space: normal; /* allow wrapping on narrow screens */
+      /* name MUST be one line: shrink on small screens */
+      .center .name{
+        font-size: clamp(30px, 9.2vw, 54px);
+      }
+      .center .role{
+        font-size: clamp(18px, 4.8vw, 26px);
+        white-space: normal; /* role may wrap if needed */
+      }
+
+      /* remove desktop y-tunnus placement */
+      .y-desktop{ display: none; }
+
+      /* mobile footer block: email + y-tunnus under it */
+      .footerMobile{
+        display: grid;
+        justify-items: center;
+        gap: 6px;
+
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: calc(14px + env(safe-area-inset-bottom));
+        padding: 0 14px;
+        text-align: center;
       }
 
       .email-bottom{
-        top: auto;
-        bottom: calc(18px + env(safe-area-inset-bottom));
-        left: 50%;
-        transform: translateX(-50%);
-        font-variant: normal;
+        font-size: var(--footerMain);
+
+        /* MUST be small caps */
+        font-variant: small-caps;
+        letter-spacing: 0.02em;
+
+        white-space: nowrap;
+      }
+
+      .y-mobile{
+        font-size: var(--ySmall);
+        font-variant: small-caps;
+        letter-spacing: 0.03em;
+        color: var(--grey);
+        white-space: nowrap;
       }
     }
   </style>
@@ -147,26 +197,32 @@
 <body>
   <div class="page">
 
-    <!-- Desktop top-left (email replaces phone) -->
+    <!-- Desktop top-left email (small caps) -->
     <div class="email-top">
       <a href="mailto:georgii.kuzenkov@gmail.com">georgii.kuzenkov@gmail.com</a>
     </div>
 
-    <!-- Company top-right (desktop) / top-center (mobile) -->
+    <!-- Company block -->
     <div class="company">
       <div class="brand">KUZENKOV &amp; Co.</div>
       <div class="tagline">Digital Markets and Attention Economy</div>
     </div>
 
-    <!-- Middle -->
+    <!-- Center -->
     <div class="center">
-      <div class="name">Georgii KUZENKOV</div>
-      <div class="role">Strategy Consultant</div>
+      <div class="name">Georgii Kuzenkov</div>
+      <div class="role">On-Chain Strategy &amp; Deal Sourcing</div>
     </div>
 
-    <!-- Mobile footer email (also shown on desktop at PDF-like position) -->
-    <div class="email-bottom">
-      <a href="mailto:georgii.kuzenkov@gmail.com">georgii.kuzenkov@gmail.com</a>
+    <!-- Desktop bottom: Y-tunnus (semi-transparent grey) -->
+    <div class="y-desktop">Y-tunnus: 0000000-0</div>
+
+    <!-- Mobile footer: email + y-tunnus under it -->
+    <div class="footerMobile">
+      <div class="email-bottom">
+        <a href="mailto:georgii.kuzenkov@gmail.com">georgii.kuzenkov@gmail.com</a>
+      </div>
+      <div class="y-mobile">Y-tunnus: 0000000-0</div>
     </div>
 
   </div>
